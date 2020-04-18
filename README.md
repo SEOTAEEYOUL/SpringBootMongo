@@ -1,4 +1,4 @@
-﻿# SpringBootMongo
+﻿# Springboot + MongoDB Test Page
 
 # http://localhost:8088/
 
