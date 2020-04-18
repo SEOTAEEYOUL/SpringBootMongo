@@ -2,38 +2,114 @@
 
 # http://localhost:8088/
 
-<pre>
+<code>
+$mongo
+> show dbs
+admin             0.000GB
+config            0.000GB
+local             0.000GB
+mongodb_tutorial  0.000GB
+test              0.000GB
+web               0.000GB
+> use admin
+> db.createUser(
+  {
+    user: "mongodb_exporter",
+    pwd: "password",
+    roles: [
+        { role: "clusterMonitor", db: "admin" },
+        { role: "read", db: "local" }
+    ]
+  }
+)
+> db.getUsers( )
+[
+        {
+                "_id" : "admin.mongodb_exporter",
+                "userId" : UUID("8e0c4460-bfac-42cd-abf4-e14e2fb1ed37"),
+                "user" : "mongodb_exporter",
+                "db" : "admin",
+                "roles" : [
+                        {
+                                "role" : "clusterMonitor",
+                                "db" : "admin"
+                        },
+                        {
+                                "role" : "read",
+                                "db" : "local"
+                        }
+                ],
+                "mechanisms" : [
+                        "SCRAM-SHA-1",
+                        "SCRAM-SHA-256"
+                ]
+        }
+]
+> db.runCommand( { serverStatus: 1 } )
+> db.runCommand( { serverStatus: 1, repl : 0, metrics: 0, locks: 0 } )
+> db.runCommand( { serverStatus: 1, repl : 1 } )
+> use web
+switched to db web
+> db
+web
+> db.createUser({user: "web", pwd: "web", roles:["readWrite"])
+> db.getUsers( )
+[
+        {
+                "_id" : "web.web",
+                "userId" : UUID("2f682af1-22f4-4f20-9acc-92659774d1ff"),
+                "user" : "web",
+                "db" : "web",
+                "roles" : [
+                        {
+                                "role" : "readWrite",
+                                "db" : "web"
+                        }
+                ],
+                "mechanisms" : [
+                        "SCRAM-SHA-1",
+                        "SCRAM-SHA-256"
+                ]
+        }
+]
+> show collections
+customer
+guestbook
+member
+memo
+> db.memo.count( )
+5
+> db.memo.find( )
+{ "_id" : ObjectId("5e30d089d3c248783a95f2f3"), "writer" : "Seo", "memo" : "서태열의 메모", "post_date" : ISODate("2020-01-29T00:23:37.143Z"), "_class" : "com.example.mongo.model.memo.dto.MemoDTO" }
+{ "_id" : ObjectId("5e30d0acd3c248783a95f2f4"), "writer" : "서태열", "memo" : "바른 메모", "post_date" : ISODate("2020-01-29T00:24:12.676Z"), "_class" : "com.example.mongo.model.memo.dto.MemoDTO" }
+{ "_id" : ObjectId("5e310e3ba788a050bb546ee4"), "writer" : "서태열", "memo" : "한줄 메모장 테스트", "post_date" : ISODate("2020-01-29T04:46:51.009Z"), "_class" : "com.example.mongo.model.memo.dto.MemoDTO" }
+{ "_id" : ObjectId("5e312059a788a050bb546efb"), "writer" : "서태열", "memo" : "한줄 메모 테스트 22222", "post_date" : ISODate("2020-01-29T06:04:09.485Z"), "_class" : "com.example.mongo.model.memo.dto.MemoDTO" }
+{ "_id" : null, "memo" : "한줄 메모 테스트 22222 - 수정 테스트 1", "writer" : "서태열" }
+> db.memo.count( );
+5
+> db.people.insert({"name" : "한글" })
+> db.people.insert({"name" : "ENG", desc : "mongodb 테스트" })
+> db.people.find({})
+> db.people.find({ name: "한글" })
+> db.people.remove({ name: "한글" })
+> 
+> db.people.drop( )
+> db.dropDatabase( )
+> db.adminCommand( { shutdown: 1 } )
+> exit
+</code>
 
+
+<pre>
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
-[32m :: Spring Boot :: [39m      [2m (v2.2.4.RELEASE)[0;39m
+**:: Spring Boot ::       (v2.2.4.RELEASE)**
 
-[2m2020-04-18 15:43:00.750[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mc.e.mongo.SpringBootMongoApplication    [0;39m [2m:[0;39m Starting SpringBootMongoApplication on SKTP117501PN001 with PID 31388 (D:\springboot\workspace\SpringBootMongo\target\classes started by P117501 in D:\springboot\workspace\SpringBootMongo)
-[2m2020-04-18 15:43:00.751[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mc.e.mongo.SpringBootMongoApplication    [0;39m [2m:[0;39m No active profile set, falling back to default profiles: default
-[2m2020-04-18 15:43:00.789[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36m.e.DevToolsPropertyDefaultsPostProcessor[0;39m [2m:[0;39m Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-[2m2020-04-18 15:43:00.789[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36m.e.DevToolsPropertyDefaultsPostProcessor[0;39m [2m:[0;39m For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-[2m2020-04-18 15:43:01.215[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
-[2m2020-04-18 15:43:01.231[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Finished Spring Data repository scanning in 13ms. Found 0 MongoDB repository interfaces.
-[2m2020-04-18 15:43:01.569[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat initialized with port(s): 8088 (http)
-[2m2020-04-18 15:43:01.575[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.apache.catalina.core.StandardService  [0;39m [2m:[0;39m Starting service [Tomcat]
-[2m2020-04-18 15:43:01.576[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36morg.apache.catalina.core.StandardEngine [0;39m [2m:[0;39m Starting Servlet engine: [Apache Tomcat/9.0.30]
-[2m2020-04-18 15:43:01.776[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36morg.apache.jasper.servlet.TldScanner    [0;39m [2m:[0;39m At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
-[2m2020-04-18 15:43:01.781[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.a.c.c.C.[Tomcat].[localhost].[/]      [0;39m [2m:[0;39m Initializing Spring embedded WebApplicationContext
-[2m2020-04-18 15:43:01.782[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.s.web.context.ContextLoader           [0;39m [2m:[0;39m Root WebApplicationContext: initialization completed in 993 ms
-[2m2020-04-18 15:43:03.156[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36morg.mongodb.driver.cluster              [0;39m [2m:[0;39m Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-[2m2020-04-18 15:43:03.196[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[localhost:27017][0;39m [36morg.mongodb.driver.connection           [0;39m [2m:[0;39m Opened connection [connectionId{localValue:1, serverValue:1}] to localhost:27017
-[2m2020-04-18 15:43:03.199[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[localhost:27017][0;39m [36morg.mongodb.driver.cluster              [0;39m [2m:[0;39m Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 2]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=2273800}
-[2m2020-04-18 15:43:03.340[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36morg.mongodb.driver.cluster              [0;39m [2m:[0;39m Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-[2m2020-04-18 15:43:03.344[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[localhost:27017][0;39m [36morg.mongodb.driver.connection           [0;39m [2m:[0;39m Opened connection [connectionId{localValue:2, serverValue:2}] to localhost:27017
-[2m2020-04-18 15:43:03.345[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[localhost:27017][0;39m [36morg.mongodb.driver.cluster              [0;39m [2m:[0;39m Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 2]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=715700}
-[2m2020-04-18 15:43:03.515[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.s.s.concurrent.ThreadPoolTaskExecutor [0;39m [2m:[0;39m Initializing ExecutorService 'applicationTaskExecutor'
-[2m2020-04-18 15:43:03.656[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.s.b.d.a.OptionalLiveReloadServer      [0;39m [2m:[0;39m LiveReload server is running on port 35729
-[2m2020-04-18 15:43:03.695[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat started on port(s): 8088 (http) with context path ''
-[2m2020-04-18 15:43:03.698[0;39m [32m INFO[0;39m [35m31388[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mc.e.mongo.SpringBootMongoApplication    [0;39m [2m:[0;39m Started SpringBootMongoApplication in 3.173 seconds (JVM running for 4.888)
+
 
 </pre>
 # Getting Started
