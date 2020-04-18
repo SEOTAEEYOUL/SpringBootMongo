@@ -2,7 +2,7 @@
 
 # http://localhost:8088/
 
-<code>
+<pre>
 $mongo
 > show dbs
 admin             0.000GB
@@ -97,7 +97,7 @@ memo
 > db.dropDatabase( )
 > db.adminCommand( { shutdown: 1 } )
 > exit
-</code>
+</pre>
 
 
 <pre>
