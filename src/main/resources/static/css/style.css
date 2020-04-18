@@ -1,0 +1,9 @@
+<!-- 하이퍼 링크에 대한 스타일을 지정 -->
+@charset "UTF-8";
+a:link    { text-decoration: none; color: blue; }
+a:hover   { text-decoration: underline; color: red; }
+a:visited { text-decoration: none; }
+a:active  { text-decoration: none; color: yellow; }
+table { border: 1px solid #444444; border-collapse: collapse; }
+th, td { border: 1px solid #444444; padding: 10px; }
+.wp-block { background-color: #e0e0e0; }
